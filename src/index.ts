@@ -6,4 +6,5 @@
 
 import relationsFeature from './relations.feature';
 
-export default relationsFeature;
+export { relationsFeature };
+export default { relationsFeature };

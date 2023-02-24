@@ -8,9 +8,9 @@
     "lint": "eslint src --ext ts"
   },
   "dependencies": {
-    "@adminjs/design-system": "^2.1.0",
-    "@adminjs/express": "^4.0.1",
-    "adminjs": "^5.6.0",
+    "@adminjs/design-system": "^4.0.0",
+    "@adminjs/express": "^5.1.0",
+    "adminjs": "^7.0.0",
     "express": "^4.17.1",
     "express-formidable": "^1.2.0",
     "nodemon": "^2.0.6",

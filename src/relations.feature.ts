@@ -1,31 +1,18 @@
 import {
-  ActionResponse,
-  RecordJSON,
   ActionHandler,
-  ResourceOptions,
-  buildFeature,
+  ActionResponse,
+  FeatureType,
+  RecordJSON,
+  buildFeature
 } from 'adminjs';
+import { RelationsFeatureConfig } from './types';
+import { bundleComponent } from './utils';
 
 export type RelationsActionResponse = ActionResponse & {
   /**
    * List of relation records
    */
   records: Array<RecordJSON>;
-};
-
-export type RelationsFeatureOptions = {
-  relations: {
-    [resourceId: string]: {
-      junction: {
-        joinKey: string;
-        inverseJoinKey: string;
-        throughResourceId: string;
-      };
-      target: {
-        resourceId: string;
-      };
-    };
-  };
 };
 
 // TODO handle resource relations
@@ -69,34 +56,39 @@ const relationsHandler: ActionHandler<RelationsActionResponse> = (
  *};
  *```
  */
-export const relationsFeature = ({ relations }: RelationsFeatureOptions) => {
-  const properties: ResourceOptions['properties'] = Object.keys(
-    relations
-  ).reduce(
-    (memo, current) => ({
-      ...memo,
-      [current]: { type: 'string', isVisible: false },
-    }),
-    {}
+export const relationsFeature = ({
+  componentLoader,
+  relations,
+}: RelationsFeatureConfig): FeatureType => {
+  const relationsTabsComponent = bundleComponent(
+    componentLoader,
+    'DefaultRelationsShowProperty'
   );
 
-  properties.relations = {
-    type: 'string',
-    components: { show: 'DefaultRelationsShowProperty' },
-    props: {
-      relationsTargets: Object.keys(relations).reduce(
+  return buildFeature({
+    properties: {
+      ...Object.keys(relations).reduce(
         (memo, current) => ({
           ...memo,
-          [current]: relations[current].target.resourceId,
+          [current]: { type: 'string', isVisible: false },
         }),
         {}
       ),
+      relations: {
+        type: 'relations',
+        components: { show: relationsTabsComponent },
+        props: {
+          relationsTargets: Object.keys(relations).reduce(
+            (memo, current) => ({
+              ...memo,
+              [current]: relations[current].target.resourceId,
+            }),
+            {}
+          ),
+        },
+        position: 999,
+      },
     },
-    position: 999,
-  };
-
-  return buildFeature({
-    properties,
     actions: {
       findRelation: {
         actionType: 'record',

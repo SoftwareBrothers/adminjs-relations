@@ -1,7 +1,9 @@
-import { ResourceWithOptions } from 'adminjs';
+import { ResourceWithOptions, ComponentLoader } from 'adminjs';
 
+import { relationsFeature } from '../../../../../src';
 import { User } from './user.entity';
-import feature from '../../../../../src/index';
+
+const componentLoader = new ComponentLoader();
 
 export const createUserResource = (): ResourceWithOptions => ({
   resource: User,
@@ -11,5 +13,21 @@ export const createUserResource = (): ResourceWithOptions => ({
       name: 'Users',
     },
   },
-  features: [feature()],
+  features: [
+    relationsFeature({
+      componentLoader,
+      relations: {
+        articles: {
+          junction: {
+            joinKey: 'authorId',
+            inverseJoinKey: 'articleId',
+            throughResourceId: 'UserArticle',
+          },
+          target: {
+            resourceId: 'Article',
+          },
+        },
+      },
+    }),
+  ],
 });
