@@ -3,7 +3,7 @@ import {
   ActionResponse,
   FeatureType,
   RecordJSON,
-  buildFeature
+  buildFeature,
 } from 'adminjs';
 import { RelationsFeatureConfig } from './types';
 import { bundleComponent } from './utils';

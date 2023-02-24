@@ -1,1 +1,1 @@
-export { default as RecordRelationsComponent } from './RecordRelations';
+export { default as DefaultRelationsShowProperty } from './DefaultRelationsShowProperty';
