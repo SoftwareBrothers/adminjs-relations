@@ -3,7 +3,7 @@ version: '3.7'
 services:
   adminjs_relations:
     container_name: adminjs-relations
-    image: postgis/postgis:14-3.3
+    image: postgres:15
     environment:
       - POSTGRES_DB=adminjs
       - POSTGRES_USER=adminjs
