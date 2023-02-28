@@ -1,82 +1,61 @@
-import {
-  ActionHandler,
-  ActionResponse,
-  FeatureType,
-  RecordJSON,
-  buildFeature,
-} from 'adminjs';
+import { buildFeature, ComponentLoader, FeatureType } from 'adminjs';
+import { relationsHandler } from './actions/relations.handler';
 import { RelationsFeatureConfig } from './types';
 import { bundleComponent } from './utils';
 
-export type RelationsActionResponse = ActionResponse & {
-  /**
-   * List of relation records
-   */
-  records: Array<RecordJSON>;
-};
-
-// TODO handle resource relations
-const relationsHandler: ActionHandler<RelationsActionResponse> = (
-  req,
-  res,
-  ctx
-) => ({
-  records: [],
+const bundleRelationsComponents = (componentLoader: ComponentLoader) => ({
+  show: bundleComponent(componentLoader, 'RelationsShowPropertyComponent'),
+  edit: bundleComponent(componentLoader, 'RelationsEditPropertyComponent'),
+  list: bundleComponent(componentLoader, 'RelationsEditPropertyComponent'),
 });
 
 /**
  * @exaple
  * ```
- * export const userResource = {
- *  resource: UserModel,
+ * export const createOrganizationResource = (): CreateResourceResult<
+ *  typeof Organization
+ *> => ({
+ *  resource: Organization,
  *  features: [
  *    relationsFeature({
+ *      componentLoader,
  *      relations: {
- *        articles: {
+ *        persons: {
  *          junction: {
- *            joinKey: "authorId",
- *            inverseJoinKey: "articleId",
- *            throughResourceId: "UserArticle",
+ *            joinKey: 'personId',
+ *            inverseJoinKey: 'organizationId',
+ *            throughResourceId: 'PersonOrganization',
  *          },
  *          target: {
- *            resourceId: "Article",
+ *            resourceId: 'Person',
  *          },
  *        },
  *      },
  *    }),
  *  ],
  *  options: {
- *    ...
+ *    navigation: { icon: 'Home' },
  *    actions: {
  *      findRelation: {
- *        isAccessible: (...) => boolean,
+ *        isAccessible: true,
  *      },
  *    },
  *  },
- *};
+ *});
  *```
  */
 export const relationsFeature = ({
   componentLoader,
   relations,
+  propertyKey = 'relations',
 }: RelationsFeatureConfig): FeatureType => {
-  const relationsTabsComponent = bundleComponent(
-    componentLoader,
-    'DefaultRelationsShowProperty'
-  );
+  const { show, edit, list } = bundleRelationsComponents(componentLoader);
 
   return buildFeature({
     properties: {
-      ...Object.keys(relations).reduce(
-        (memo, current) => ({
-          ...memo,
-          [current]: { type: 'string', isVisible: false },
-        }),
-        {}
-      ),
-      relations: {
-        type: 'relations',
-        components: { show: relationsTabsComponent },
+      [propertyKey]: {
+        type: 'string',
+        components: { show, edit, list },
         props: {
           relationsTargets: Object.keys(relations).reduce(
             (memo, current) => ({
@@ -86,7 +65,7 @@ export const relationsFeature = ({
             {}
           ),
         },
-        position: 999,
+        position: Number.MAX_SAFE_INTEGER,
       },
     },
     actions: {

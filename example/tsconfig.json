@@ -1,18 +1,21 @@
 {
   "compilerOptions": {
-    "outDir": "./built",
-    "target": "ES2016",
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": false,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "noImplicitThis": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
+    "jsx": "react",
+    "module": "commonjs",
+    "declaration": false,
+    "removeComments": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "target": "es2017",
+    "sourceMap": false,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  "include": ["./src/**/*", "./spec/**/*"]
+  "exclude": ["test", "lib", "types"]
 }

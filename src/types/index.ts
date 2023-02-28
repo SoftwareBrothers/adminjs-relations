@@ -3,6 +3,7 @@ import type { ComponentLoader } from 'adminjs';
 export type RelationsFeatureConfig = {
   componentLoader: ComponentLoader;
   relations: RelationsFeatureOptions;
+  propertyKey?: string;
 };
 
 export type RelationsFeatureOptions = {

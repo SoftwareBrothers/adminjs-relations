@@ -13,7 +13,7 @@ import { memo } from 'react';
 
 const api = new ApiClient();
 
-const DefaultRelationsShowProperty: FC<BasePropertyProps> = props => {
+const RelationsShowPropertyComponent: FC<BasePropertyProps> = props => {
   const { resource, record } = props;
   const { id: resourceId, properties } = resource;
 
@@ -91,4 +91,4 @@ const RelationTab: FC<RelationTabProps> = props => {
   );
 };
 
-export default memo(DefaultRelationsShowProperty);
+export default memo(RelationsShowPropertyComponent);
