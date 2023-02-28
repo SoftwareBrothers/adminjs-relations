@@ -1,8 +1,14 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: `${process.cwd()}/.env` });
+
+import 'reflect-metadata';
 import express from 'express';
-import setupAdmin from './admin/admin';
+import setupAdmin from './admin';
+import cors from 'cors';
 
 const app = express();
-const port = 3000;
+app.use(cors({ origin: '*' }));
+const port = process.env.PORT ?? 8080;
 
 const run = async (): Promise<void> => {
   await setupAdmin(app);
