@@ -1,9 +1,10 @@
 /**
- * @module @adminjs/example-feature
+ * @module @adminjs/relations
  * @subcategory Features
  * @section modules
  */
 
-import feature from './feature';
+import relationsFeature from './relations.feature';
 
-export default feature;
+export { relationsFeature };
+export default { relationsFeature };
